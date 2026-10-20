@@ -97,5 +97,60 @@ git log --oneline
 ```
 # 连接远程仓库
 ## 在 Github/Gitee 上创建远程仓库
-创建成功后，页面会显示一个仓库地址，类似：
+创建成功后复制，页面会显示一个仓库地址，类似：
 https://gitee.com/你的用户名/my-first-project.git
+https://github.com/你的用户名/my-first-project.git  #https://github.com/SipCola/ai_note.git
+
+## 本地仓库关联远程仓库
+```bash
+回到你的终端（确保在项目目录下），输入：
+
+git remote add origin https://gitee.com/你的用户名/my-first-project.git
+#git remote add origin https://github.com/SipCola/ai_note.git
+origin 是远程仓库的别名（约定俗成用 origin），后面是你刚才复制的地址。
+
+检查是否关联成功：
+
+git remote -v
+输出：
+
+origin  https://gitee.com/你的用户名/my-first-project.git (fetch)
+origin  https://gitee.com/你的用户名/my-first-project.git (push)
+```
+## 推送代码到远程
+```bash
+首次推送：
+#有些 Git 版本默认分支名是 master 而不是 main，你可以用 git branch 查看当前分支名，然后把命令中的 main 替换成对应的名称。
+或者统一设置默认分支名为 main：
+git config --global init.defaultBranch main
+git push -u origin main #如果报错那么输入git push -u origin master
+系统会提示你输入 Gitee/GitHub 的用户名和密码（或 Token）。输入后代码就推送到远程了。
+
+-u 参数会建立本地分支和远程分支的关联，只需要在第一次推送时加上。
+```
+
+## 后续推送（已经关联过了）：
+```bash
+以后每次提交后，只需要简单地：
+git push
+```
+## 从远程拉取代码
+```bash
+git pull —— 获取远程最新代码
+当远程仓库有更新时（比如队友推送了新代码），用：
+
+git pull
+它会自动下载远程的最新改动并合并到你的本地。
+
+git clone —— 克隆已有仓库
+如果你想把别人的（或者自己在另一台电脑上的）项目下载到本地：
+
+git clone https://gitee.com/用户名/仓库名.git
+这个命令会在当前目录下创建一个新文件夹，里面就是完整的项目。
+
+clone 和 init 的区别：
+
+命令	使用场景
+git init	在本地从零开始创建新仓库
+git clone	把远程已有的仓库下载到本地
+```
