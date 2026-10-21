@@ -156,3 +156,51 @@ clone 和 init 的区别：
 git init	在本地从零开始创建新仓库
 git clone	把远程已有的仓库下载到本地
 ```
+# 分支
+## 分支基本操作
+```bash
+查看当前分支
+git branch
+输出（* 标记当前所在的分支）：
+
+* main
+创建新分支
+git branch feature/hello
+这会创建一个名为 feature/hello 的新分支，但你还在 main 上。
+
+切换分支
+git checkout feature/hello
+或者用更新的命令：
+
+git switch feature/hello
+```
+
+# 5.3 在分支上工作并合并
+完整流程演示：
+```bash
+# 1. 确保你在 main 分支上(checkout本意：结账离开，登记取出)
+git checkout main
+
+# 2. 创建并切换到新分支
+git checkout -b feature/greeting
+
+# 3. 在新分支上开发（创建一个新文件）
+echo "def greet(): print('你好！')" > greeting.py
+
+# 4. 提交改动
+git add .
+git commit -m "添加greeting功能"
+
+# 5. 切回主分支
+git checkout main
+
+# 6. 你会发现 greeting.py 不见了！别担心，它在 feature/greeting 分支上
+
+# 7. 把新分支的改动合并到主分支
+git merge feature/greeting
+
+# 8. 现在 greeting.py 出现在 main 分支上了！
+
+# 9. 删除已合并的分支（可选，保持整洁）
+git branch -d feature/greeting
+```
