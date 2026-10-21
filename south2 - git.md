@@ -2,6 +2,8 @@
 ## 下载git
 打开 Git 官网下载页面：https://git-scm.com/downloads/win（一般选 64-bit Git for Windows Setup）
 ```bash
+#如果安装了winget,使用此方式安装
+winget install --id Git.Git -e --source winget
 #检查版本
 git --version
 ```
