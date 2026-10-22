@@ -40,7 +40,17 @@ npm run dev #— 启动开发服务器
   ➜  Local:   http://localhost:5173/
 打开浏览器，访问 http://localhost:5173/，看到 Vue 的欢迎页面，就说明成功了！
 ```
+# npm run dev可能遇到的异常
+```bash
+#npm : 无法加载文件 C:\Program Files\nodejs\npm.ps1，因为在此系统上禁止运行脚本。有关详细信息，请参阅 https:/go.microsoft.com/fwlink/?LinkID=135170 中的 about_Executi （执行以下这条命令可以解决）
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+#临时有用关闭窗口失效
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
+#'XXX' 不是内部或外部命令，也不是可运行的程序或批处理文件。缺少node_modules 文件夹
+npm install
+
+```
 {{ }} 里面可以写数据名、表达式、调用方法，但不能写语句（比如 if、for）
 
 # 创建一个组件
