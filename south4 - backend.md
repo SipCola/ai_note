@@ -1,4 +1,5 @@
 # 使用uv安装包（也可以使用conda切换环境）
+
 ```bash
 #安装uv
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
@@ -23,13 +24,16 @@ uv run python main.py
 uv run uvicorn main:app
 
 ```
+
 # 安装三个核心依赖
+
 |包名	|作用|
 |-|-|
 |fastapi    |Python 的 Web 框架，用来写后台接口|
 |uvicorn	|服务器，用来运行 FastAPI 程序|
 |sqlmodel	|数据库工具，用 Python 类操作数据库（内部整合了 SQLAlchemy + Pydantic）|
 |httpx(可选)	|httpx 在后续测试接口时可能用到。另外推荐安装一个数据库可视化工具 DB Browser for SQLite，可以直观地看到数据库里存了什么：下载地址：https://sqlitebrowser.org/dl/|
+
 ```bash
 
 #安装依赖（如果在用 uv：uv pip install fastapi uvicorn sqlmodel）
@@ -37,7 +41,9 @@ pip install fastapi uvicorn sqlmodel
 #httpx 可选 在后续测试接口时可能用到。
 pip install httpx
 ```
+
 # 创建项目文件夹
+
 我们的项目最终长这样（先别急着全部创建，跟着教程一步步来）：
 todo_backend/
 ├── main.py              # 入口文件：定义所有接口
@@ -59,7 +65,9 @@ sqlmodel
 #或者使用这行命令直接写入
 echo "fastapi`nuvicorn`nsqlmodel" | Out-File requirements.txt -Encoding utf8
 ```
+
 # 第一次启动项目
+
 ```bash
 #在 todo_backend/ 目录下创建 main.py，写入以下代码：
 
@@ -93,7 +101,9 @@ INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
 #可以直接在这个页面上测试接口，不需要写前端代码打开浏览器，浏览器输入：
 http://127.0.0.1:8000/docs
 ```
+
 # 路由：URL 和函数的对应关系
+
 ```python
 #"路由"就是：当用户访问某个 URL 时，程序应该执行哪个函数。
 from fastapi import FastAPI
@@ -115,7 +125,9 @@ def get_user(user_id: int):
 #http://127.0.0.1:8000/users/1 → {"user_id": 1, "name": "用户1"}
 #http://127.0.0.1:8000/users/42 → {"user_id": 42, "name": "用户42"} 
 ```
+
 ## 第一点：@app.get("/items/{item_id}") 里的字符串是什么？
+
 - 第一个参数是 URL 路径模式，不是磁盘路径，也不是文件位置。
 - 第二个是传入调用函数的参数
 - /users/{user_id}/posts 整体就是一个路径模式，FastAPI 拿它去和请求的 URL 做模式匹配。里面的成分只有两类：
@@ -123,6 +135,7 @@ def get_user(user_id: int):
 占位符（路径参数）：{user_id} —— 匹配任意一段，取值传给函数参数。
 
 ## 查询参数
+
 ```python
 @app.get("/users/{user_id}/posts")
 def get_user_posts(user_id: int, page: int = 1, keyword: str = None):
@@ -136,7 +149,9 @@ def get_user_posts(user_id: int, page: int = 1, keyword: str = None):
 
 两者从 URL 不同部分取值，互不干扰。
 ```
+
 ## 请求体
+
 ```python
 @app.post("/todos", status_code=201)
 def create_todo(todo: TodoCreate):
@@ -149,9 +164,12 @@ def create_todo(todo: TodoCreate):
 #它不是查询参数。调用时必须发 JSON body（如 {"title": "...", "done": false}），而不是拼在 URL 的 ? 后面。
 #status_code=201是http状态码
 ```
+
 ## 数据库
-- Python 自带 SQLite 支
+
+- Python 自带 SQLite 支持
 - SQLModel 让你用 Python 类 来代替 SQL 语句，对 Python 开发者更友好：
+
 ```python
 # 定义表
 class Todo(SQLModel, table=True):
