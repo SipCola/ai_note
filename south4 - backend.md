@@ -1,5 +1,4 @@
 # 使用uv安装包（也可以使用conda切换环境）
-
 ```bash
 #安装uv
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
@@ -101,8 +100,9 @@ INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
 #可以直接在这个页面上测试接口，不需要写前端代码打开浏览器，浏览器输入：
 http://127.0.0.1:8000/docs
 ```
+# 后端
 
-# 路由：URL 和函数的对应关系
+## 路由：URL 和函数的对应关系
 
 ```python
 #"路由"就是：当用户访问某个 URL 时，程序应该执行哪个函数。
@@ -126,7 +126,7 @@ def get_user(user_id: int):
 #http://127.0.0.1:8000/users/42 → {"user_id": 42, "name": "用户42"} 
 ```
 
-## 第一点：@app.get("/items/{item_id}") 里的字符串是什么？
+## @app.get("/items/{item_id}") 里的字符串是什么？
 
 - 第一个参数是 URL 路径模式，不是磁盘路径，也不是文件位置。
 - 第二个是传入调用函数的参数
@@ -182,4 +182,114 @@ class Todo(SQLModel, table=True):
 todo = Todo(title="买牛奶")
 session.add(todo)
 session.commit()
+```
+
+## 定义数据库模型
+```python
+用 Python 类定义表
+创建 models.py：
+
+from sqlmodel import SQLModel, Field
+
+
+class TodoCreate(SQLModel):
+    """创建 Todo 时的请求体模型"""
+    title: str
+    done: bool = False
+
+
+class TodoUpdate(SQLModel):
+    """更新 Todo 时的请求体模型"""
+    title: str | None = None
+    done: bool | None = None
+
+
+class Todo(SQLModel, table=True):
+    """Todo 数据库表"""
+    id: int | None = Field(default=None, primary_key=True)
+    title: str
+    done: bool = False
+```
+
+## 连接数据库
+创建 database.py
+```python
+from sqlmodel import SQLModel, Session, create_engine
+
+DATABASE_URL = "sqlite:///database.db"
+
+engine = create_engine(DATABASE_URL, echo=True)
+
+
+def create_db_and_tables():
+    SQLModel.metadata.create_all(engine)
+
+
+def get_session():
+    with Session(engine) as session:
+        yield session
+```
+
+## 增删查改
+
+# 前后端联调
+## 跨域问题
+```python
+#开发时前端通常跑在 5173 端口，后端跑在 8000 端口，端口不同就是跨域。
+
+#解决方法：后端添加 CORS 中间件
+#在 main.py 中加几行代码即可：
+
+from fastapi.middleware.cors import CORSMiddleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+#这段代码的意思是：允许任何来源的前端访问后端接口s。
+```
+# Vue 中使用 axios 调用接口
+```bash
+#首先初始化一个vue项目
+npm create vue@latest my-app
+#然后依次执行：
+cd my-app #— 进入项目目录
+npm install #— 安装项目依赖（第一次要等几十秒）
+npm run dev #— 启动开发服务器
+#再安装 axios,在你的 Vue 项目中运行：
+npm install axios
+```
+```python
+基本用法
+#axios 是一个 HTTP 请求库，用法非常简单：
+import axios from 'axios'
+
+const API = 'http://127.0.0.1:8000'
+#GET 请求 —— 获取待办列表
+async function fetchTodos() {
+  const response = await axios.get(`${API}/todos`)
+  console.log(response.data)  // [{ id: 1, title: "买牛奶", done: false }, ...]
+}
+#POST 请求 —— 新增待办
+async function addTodo(title) {
+  const response = await axios.post(`${API}/todos`, {
+    title: title,
+    done: false
+  })
+  console.log(response.data)  // { id: 2, title: "写作业", done: false }
+}
+#PUT 请求 —— 修改待办
+async function updateTodo(id, done) {
+  const response = await axios.put(`${API}/todos/${id}`, {
+    done: done
+  })
+  console.log(response.data)  // { id: 1, title: "买牛奶", done: true }
+}
+#DELETE 请求 —— 删除待办
+async function deleteTodo(id) {
+  await axios.delete(`${API}/todos/${id}`)
+  console.log('删除成功')
+}
 ```
