@@ -122,4 +122,4 @@ def register(form: RegisterForm):
 ```
 # FastAPI 允许修改文档的访问路径，甚至关闭文档
 
-# 依赖注入：Depend（处理函数）
+# 依赖注入：Depends（处理函数）
