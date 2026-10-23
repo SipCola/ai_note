@@ -1,4 +1,10 @@
 # 安装配置git
+Git 的命令不需要死记硬背。学习 Git 最好的方法就是在实际项目中反复使用：
+
+每次写完代码就 add → commit → push，形成肌肉记忆
+遇到问题先 git status 看看状态
+善用搜索引擎和 AI 工具查命令——这本身就是开发者的核心能力
+记住这个最小工作流，你就能应对 90% 的场景：
 ## 下载git
 打开 Git 官网下载页面：https://git-scm.com/downloads/win（一般选 64-bit Git for Windows Setup）
 ```bash
