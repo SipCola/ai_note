@@ -21,6 +21,7 @@ def hello():
     print("World")
 ```
 ![图片描述](图片地址)
+[![Release](https://img.shields.io/github/v/release/leookun/cursor-byok?style=flat-square)](https://github.com/)
 
 ---
 分隔线
