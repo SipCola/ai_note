@@ -26,6 +26,8 @@ PowerShell 与 CMD 的区别
 ```bash
 conda init powershell
 #然后重启 PowerShell，才能正常使用 conda activate。
+
+#如果还是不能是被编辑器识别 CTRL Shift +p 选择python select interpret
 ```
 # 3、验证安装
 - win+R ，输入cmd
