@@ -8,7 +8,7 @@ conda env list
 conda activate label_studio_ai
 
 安装依赖
-pip install label-studio
+pip install label-studio(太慢使用这个：pip install label-studio -i https://pypi.tuna.tsinghua.edu.cn/simple --default-timeout=120)
 
 启动
 label-studio
@@ -34,7 +34,9 @@ label-studio
 </View>
 ```
 ```bash
+
 ```
 
 ```python
+
 ```
