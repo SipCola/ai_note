@@ -1,10 +1,4 @@
 # 安装配置git
-Git 的命令不需要死记硬背。学习 Git 最好的方法就是在实际项目中反复使用：
-
-每次写完代码就 add → commit → push，形成肌肉记忆
-遇到问题先 git status 看看状态
-善用搜索引擎和 AI 工具查命令——这本身就是开发者的核心能力
-记住这个最小工作流，你就能应对 90% 的场景：
 ## 下载git
 打开 Git 官网下载页面：https://git-scm.com/downloads/win（一般选 64-bit Git for Windows Setup）
 ```bash
@@ -492,6 +486,7 @@ Learn Git Branching	可视化互动教程，强烈推荐	https://learngitbranchi
 GitHub Skills	GitHub 官方互动练习	https://skills.github.com/
 Gitee 帮助文档	国内平台，中文友好	https://gitee.com/help
 猴子都能懂的 Git 入门	图文并茂的中文教程	https://backlog.com/git-tutorial/cn/
+
 写在最后
 
 Git 的命令不需要死记硬背。学习 Git 最好的方法就是在实际项目中反复使用：
@@ -507,3 +502,23 @@ git push
 加油，你已经迈出了成为开发者的重要一步！ 🚀
 
 ```
+# 文件状态
+git status 短格式里文件名旁边常见的字母标记全解：
+
+A（Added）：新增文件，已暂存，等待提交。
+
+M（Modified）：文件内容被修改；在暂存区列表示修改已 add，在工作区列表示改了还没 add。
+
+D（Deleted）：文件被删除；在暂存区列表示删除已暂存，在工作区列表示删了还没 add。
+
+R（Renamed）：文件被重命名，后面常跟相似度百分比。
+
+C（Copied）：文件被复制。
+
+U（Unmerged）：文件处于未合并状态，通常是有冲突待手动解决。
+
+T（Type changed）：文件类型变更（如普通文件变符号链接），较少见。
+
+?（Untracked）：未跟踪的新文件，Git 还没记录。
+
+!（Ignored）：被 .gitignore 忽略的文件（需加 --ignored 才显示）。
