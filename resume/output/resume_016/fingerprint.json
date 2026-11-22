@@ -1,0 +1,112 @@
+{
+  "output_id": "resume_016",
+  "project_order": [
+    "sales_consulting_agent",
+    "multimodal_asset_center",
+    "live_clip_agent",
+    "content_operation_agent",
+    "ai_data_platform",
+    "agent_runtime",
+    "mcp_shared_platform",
+    "model_finetuning"
+  ],
+  "project_aliases": {
+    "sales_consulting_agent": "售前商品咨询 Agent",
+    "multimodal_asset_center": "知识素材中心与销售考核",
+    "live_clip_agent": "直播长视频智能切片",
+    "content_operation_agent": "商品内容运营 Agent",
+    "ai_data_platform": "知识数据与训练数据流水线",
+    "agent_runtime": "商品交易 Agent运行时",
+    "mcp_shared_platform": "多租户 MCP 基础设施",
+    "model_finetuning": "销售模型微调与对齐"
+  },
+  "highlight_order": {
+    "sales_consulting_agent": [
+      "rerank_dense_weight",
+      "prefix_kv_ttft",
+      "rag_hybrid_int8",
+      "rtc_fec_jitter",
+      "multimodal_response",
+      "prompt_eval_feedback"
+    ],
+    "multimodal_asset_center": [
+      "offline_enhancement",
+      "video_segment_mix",
+      "retrieval_text_vector",
+      "auto_exam",
+      "rag_exam_evolution"
+    ],
+    "live_clip_agent": [
+      "workerfs_compress",
+      "postgres_queue",
+      "three_layer_arch",
+      "sse_progress",
+      "long_video_context"
+    ],
+    "content_operation_agent": [
+      "astream_ttft",
+      "async_generation",
+      "subgraph_checkpointer",
+      "model_routing_cost",
+      "observability",
+      "high_availability"
+    ],
+    "ai_data_platform": [
+      "triple_masking",
+      "conversation_blocks",
+      "etl_raw_chats",
+      "multi_format_export",
+      "data_bus"
+    ],
+    "agent_runtime": [
+      "autonomous_loop",
+      "guardrails",
+      "provider_tool_registry",
+      "demonstration_learning",
+      "context_budget"
+    ],
+    "mcp_shared_platform": [
+      "rest_mcp_gateway",
+      "llm_gateway",
+      "four_mcp_servers",
+      "tenant_rag",
+      "dual_memory",
+      "seven_step_serverless"
+    ],
+    "model_finetuning": [
+      "qlora_lora",
+      "sft_dpo",
+      "sft_rag_split",
+      "three_stage_rag",
+      "rtc_closed_loop"
+    ]
+  },
+  "paragraph_grouping": {
+    "sales_consulting_agent": "每个亮点一段",
+    "multimodal_asset_center": "每个亮点一段",
+    "live_clip_agent": "每个亮点一段",
+    "content_operation_agent": "每个亮点一段",
+    "ai_data_platform": "每个亮点一段",
+    "agent_runtime": "每个亮点一段",
+    "mcp_shared_platform": "每个亮点一段",
+    "model_finetuning": "每个亮点一段"
+  },
+  "narrative_style": "problem_solution_result",
+  "skill_order": [
+    "商品咨询",
+    "素材检索",
+    "内容制作",
+    "平台能力"
+  ],
+  "project_count": 8,
+  "requires_confirmation": {
+    "model_finetuning": [
+      "项目时间起止顺序异常，生成前必须由用户确认"
+    ]
+  },
+  "key_sections_text": "# AI Agent 架构师项目参考稿\n\n本稿用于研读范本。下列技术职责、项目规模与性能数字均出自参考材料，不能作为刘伟臣的个人业绩。段落中的旧项目编号沿用技能事实库。\n\n## 技术项目\n\n### 售前商品咨询 Agent\n\n将微信与 WhatsApp 销售对话交给数据中台清洗，输出 RAG 知识库。智能客服支持实时语音对话，从商品咨询持续到引导下单。\n\n- **Rerank 精排与 dense_weight 调优**　检索耗时集中在候选集合处理。先降维并精简 Limit，再用 base-rerank 轻量模型重排，动态调整 dense_weight 权重，在保持语义理解的同时提升专有名词命中率。范本记录检索速度提升 4 倍。\n\n- **Prefix Caching / KV Cache 与 TTFT 优化**　为复用相同前缀，先固定 RAG 片段排序、合并 System Prompt 消息体，再用 Prefix Caching 和 KV Cache 加速推理。结合模型选型和资源池优先级调优，复杂 RAG 请求的 TTFT 从 15 秒降到 2 秒内。\n\n- **RAG 知识库与 HNSW 混合检索**　知识库接收数据中台导出的 RAG 数据，以自定义标识符切片来避免语义截断。检索侧组合 Metadata 标签过滤与 HNSW_HYBRID 混合检索，Int8 量化使向量存储空间降低 75%。\n\n- **RTC 实时语音链路与抗丢包**　ASR 实时识别用户情感，TTS 声音复刻用于生成情绪化回复。传输侧结合 FEC 前向纠错与自适应 Jitter Buffer，在 50% 高丢包条件下实现语音对话无感知恢复。\n\n- **多模态混排应答**　语音客服和图文客服接入同一多模态素材中心。检索命中图片或视频后，将文字、图片、视频分条混排返回，两个入口共享多模态应答。\n\n- **提示词工程与数据回流**　用 Prompt Pilot 管理提示词，对同一评测集自动化评分并做版本对比，针对负样本进行算法重构。高质量样本回流数据中台作为微调语料，微调模型接入 LLM 层后进一步降低 TTFT，Max Token 分级控制改善 Token 利用率。\n\n### 知识素材中心与销售考核\n\n让商品图、商品详情和视频统一管理，支持 AI 客服多模态回复并补充数据中台。数据中台的高质量知识用于 AI 销售考核，替代人工培训。\n\n- **离线特征增强与即时检索**　先将人工维护的标题、描述、标签拼接为 retrieval_text，使素材入库即可命中。再对同一行做离线增强，用 OCR（RapidOCR）提取图片文字、VLM（qwen-vl）补图片描述、ASR 与 LLM 补视频口播，据此重写 retrieval_text。以 source_table 和 source_id 做 UPSERT 幂等回扫，召回相似度从约 0.38 提升至约 0.71。\n\n- **视频切片处理与混排应答**　ASR 时间戳把长视频拆成多条 rag_assets，media_url 携带 #t=秒数，播放器可直接跳转到片段。混排采用阈值递增策略，文字必发，每次图片不超过 3 张、视频不超过 1 条。命中隐私素材只返回打码版 TOS URL。\n\n- **三模态统一向量底座**　text、image、video 同存于 rag_assets。系统不向量化媒体本身，而是记录素材能回答什么问题，使 retrieval_text 与用户提问对齐。pgvector 保存 1024 维向量，配合 HNSW 索引，通过一条 SQL 跨模态召回。\n\n- **LLM 智能出题与多维评分**　资深考官从 knowledge_articles 和 knowledge_chunks 生成分级场景题及参考答案。资深评审专家逐题自动评判实战性、需求把握、销售策略、话术自然度与红线检查，结果映射为百分制，保留人工二次复核。\n\n- **海量知识库 RAG 出题演进**　知识库增长至十万级后，固定 Top-30 取材容易使题目重复、长尾素材利用不足。LLM 先规划出题主题，再以 pgvector 或 Milvus 多轮向量检索，使用 MMR 去重以保持多样性。\n\n### 直播长视频智能切片\n\n让 AI 在直播回放中自动定位精彩片段，生成标题和文案以减轻剪辑师工作，ASR 转写结果同步回流数据中台复用。\n\n- **浏览器内 FFmpeg.wasm 提音频**　浏览器用 WORKERFS 零拷贝挂载源文件，仅上传转成 16kHz、单声道、64kbps 的 MP3。样例中的 2.5GB 视频压至约 30MB，上传体积降低 99%，用户等待从分钟级缩短到秒级。\n\n- **PostgreSQL 零云依赖任务队列**　API 将任务以 pending 状态写入 PostgreSQL 任务队列后快速返回。Task Runner 后台协程每秒抢占一条，按串行模式执行。进程崩溃后自动将进行中任务重置为 pending，使队列零云依赖、任务可恢复。\n\n- **三层端到端架构**　视频从 React 19 与 FFmpeg.wasm 前端进入 FastAPI、SQLAlchemy 2.0 后端。Groq Whisper 与 DeepSeek 承担转写和精彩片段识别，端到端流水线输出短视频切片。\n\n- **SSE 可观测 Pipeline**　数据库是唯一进度源，任务进度统一写入数据库，SSE 每秒读库并推送，支持断线恢复和多端进度一致。长音频经 ffmpeg -c copy 按 25 分钟无损分段，串行转录后用时间戳 offset 还原绝对时间轴。\n\n- **长视频 LLM 分析与浏览器裁切**　分析 6 小时长视频时，转写按约 6000 Token 分批，以双向重叠去重控制上下文。按直播、面试或讲座选择 Prompt，返回爆款分、推荐文案和抖音风格标题。导出时用 FFmpeg.wasm 在浏览器内批量裁切打包，后端不承担重型转码。\n\n### 商品内容运营 Agent\n\n商品图、商品介绍和宣传文案由内容工作流持续生成。生成图片直接沉淀进素材中心，再反哺多模态知识库。\n\n- **流式体验与 TTFT 优化**　用 LangGraph astream_events 监听 on_chat_model_stream，前端以 ReadableStream 渲染 Token 级实时流。感知 TTFT 降低 60%，流式与非流式的 Checkpointer 数据结构一致。\n\n- **配图批量并发生成**　配图的同步 API 经 run_in_executor 封装为协程，以 asyncio.gather 并发执行。遇到服务抖动做指数退避重试，整体生成耗时缩减 70%。\n\n- **LangGraph SubGraph 与 Checkpointer**　选题、写作和配图各由独立的 LangGraph SubGraph 编排。PostgreSQL Checkpointer 持久化状态，允许任意历史节点回滚和单节点增量重试，把故障恢复范围从整图缩小到单节点。\n\n- **多模型动态路由与成本优化**　按难度将简单任务交给轻量模型、复杂任务交给旗舰模型。with_structured_output 施加 Pydantic Schema 强约束，JSON Mode 配合手动解析解决结构化输出与 Token 统计不兼容，推理成本降低 40%。\n\n- **成本追踪与可观测体系**　MetricsContext 按节点记录 Token 消耗、延迟和错误率，再结合定价模型进行成本核算。环境变量 Mock 开关解耦外部服务，用 request_id 串联 LangSmith 和 structlog 记录，问题定位由小时级缩短至分钟级。\n\n- **容器化高可用保障**　请求入口设置 SlowAPI 限流、熔断降级及健康检查，进程支持优雅关闭。生成商品图直接写入素材中心，经离线增强后可供客服多模态回复，完成生成即沉淀的闭环。\n\n### 知识数据与训练数据流水线\n\nAI 体系的数据底座将微信原始聊天记录加工为可训练、可检索、可考核的数据资产，使客服、微调、考核、素材和直播共享取数入口。\n\n- **过滤脱敏引擎与价格红线**　按 9 级优先级分类过滤噪声，对手机号、身份证、银行卡、邮箱及 API Key 做正则脱敏，在清洗、写入、导出三个阶段重复检查。价格脱敏是硬红线，从源头防止微调模型泄露真实定价。\n\n- **会话块构建与人工审核**　按 5 分钟时间窗切分会话，合并同一角色的连续消息并去重。自动预标注分类和质量分，提取 Q&A、标记敏感内容，高质量数据进入 staging_conversations 暂存区。只有人工审核后的数据成为唯一可信数据源。\n\n- **全链路 ETL 与原始库设计**　ETL 从微信本地 SQLite 的 MSG0-5.db 与 MicroMsg.db 抽取消息，将 wxid 映射到显示名、解析群消息发送者、执行时间过滤，并按 session、timestamp、content 去重。不可变原始库 raw_chats 保留输入，再经暂存区和人工审核供多下游使用。\n\n- **多格式导出与知识提炼**　将 approved 数据导出为 ShareGPT、Alpaca、OpenAI JSONL 训练样本或 RAG CSV 知识库数据。Embedding 结果写入 knowledge_chunks，LLM 提炼结构化 knowledge_articles，分别供事实库中项目二的 RAG 检索、项目七的 AI 考核出题使用。\n\n- **数据总线与双向闭环**　把直播切片的 ASR 转写结果回流入库，再从素材中心引入图片和视频补充多模态语料，形成以数据为核心的双向闭环。\n\n### 商品交易 Agent运行时\n\n范本角色负责总体架构与核心研发，从零设计模型无关、工具可插拔的 Agent 运行时。商品交易智能客服在运行时自主决策、自我进化，接管原先由规则和流程编排承担的工作。\n\n- **Loop Engine 自主决策循环**　模型取得决策权，依次推理、选工具、调用、观察、再决策直至终止。意图识别隐式融入工具选择，去除独立意图分类模块。支持单步多工具并行调用，发生工具异常时，在不中断循环的前提下转换为 observation 回填，让模型据此自我纠错。\n\n- **运行护栏与人工兜底**　用最大步数与超时两道护栏共同限定一次运行的边界，超限后自动转人工。\n\n- **Harness 运行时与 Provider/Tool 解耦**　LLMProvider 与 Tool 通过注册表解耦，Loop 引擎仅依赖接口，扩展时保留原有循环与业务代码。新模型实现 chat() 适配器，新增能力注册一个 Tool。配置支持离线 Mock 与真实豆包热切换，内部 tool_call、tool_result 与 Function Calling 同构，使迁移成本趋近于零。\n\n- **示范学习驱动的 AI 自进化**　业务专家以问题、答案和套路原因开展对话式教学，LLM 归纳套路总纲并注入提示词，修改后即时生效。服务时用向量 Top-K 召回教学样本做语义精判，相似意图或换问法仍可命中。答不上自动转人工，点评式纠偏可一键固化。按业务铁律、套路总纲、召回话术分层排列优先级，让报价等高风险动作可控。\n\n- **上下文工程与预算账户建模**　从容器模型转向预算账户来管理上下文，以提高信噪比、规避 context rot。剥离工具噪声，对套路总纲做语义压缩，用 recall 按需检索。分层压缩规划覆盖删、搬、折叠画像及结构化会话档案，关键事实用外部存储双写兜底。按当前规模暂不引入子 Agent，避免过度设计。\n\n### 多租户 MCP 基础设施\n\n将增长中的 AI 项目所需的 LLM 网关、RAG、记忆和 Prompt 抽为共享基础设施，所有业务和数据中台复用同一套底座，消除重复建设。\n\n- **REST-MCP 协议网关桥接**　用 FastAPI 构建 REST 到 MCP 的桥接网关，认证、日志、配额、路由组成中间件链。以 Trace ID 全链路追踪，MCP Client Manager 管理短连接。按项目维度做 API Key 认证与 Token 配额计量，实现多租户安全隔离和成本管控。\n\n- **LLM 统一网关与配额管控**　逻辑模型名路由到 auto、pro 或 lite Endpoint，YAML 配置热切换对业务无感。Embedding 兼容 text 和 vision 两条路径，Token 消耗统一回传配额模块扣减。\n\n- **四大 MCP 服务独立拆分**　将 LLM 网关、RAG 检索、会话记忆和 Prompt 管理分别部署成独立 MCP Server。四项服务经 Streamable HTTP 提供标准化 Tool 与 Prompt 原语，新业务只需编写 Agent 编排层。\n\n- **多租户向量隔离 RAG 服务**　在 Viking DB 中按 project_id 分配独立 Collection，为多租户 RAG 提供物理隔离。文档按 Markdown 标题层级与段落边界做语义切分，新项目调用 ingest_document Tool 即可自助接入。\n\n- **双层记忆与用户画像共享**　以 project_id、session_id 隔离对话记忆并召回最近 N 轮。用户画像按 user_id 跨项目共享，通过 PostgreSQL UPSERT 幂等写入，客服 Agent 提取事实后写作 Agent 可即时读取。\n\n- **Agent 七步编排与 Serverless 部署**　GatewayClient 统一执行召回历史、读取画像、检索知识、渲染 Prompt、LLM 推理、保存记忆、提取事实七步。Agent 无状态，状态下沉共享服务。各服务独立构建 Docker 镜像，部署到阿里云 Serverless 的 FC 与 SAE，支持分层发布、灰度发布、秒级回滚及 SIGTERM 优雅终止。\n\n### 销售模型微调与对齐\n\n用数据中台导出的销售语料微调豆包，使 AI 客服回复更像真人销售，再将模型回灌到事实库项目二的售前咨询 Agent。\n\n- **QLoRA 与 LoRA 两阶段增量微调**　本地在单卡 RTX 4090 上以 LLaMA-Factory 和 Qwen2.5-3B-Instruct 验证数据质量。QLoRA 使用 rank=64、alpha=128、lr=2e-4，单轮约 40 分钟。验证通过后上传火山引擎方舟，生产侧豆包 1.5 通过 LoRA 训练，rank=32、lr=1e-5。风格一致性人工盲评由 2.1 升至 4.3，满分 5 分。\n\n- **SFT + DPO 偏好对齐流程**　先以 SFT 学习风格模仿，解决从不会到会说的问题，再以 DPO 处理会说但说不好的回复。同一问题采样多条回复，由销售主管标注 chosen 与 rejected 偏好对。在 DPO 与 RLHF 之间选择前者，因为 DPO 跳过奖励模型训练，在偏好数据有限时更稳定、成本更低。\n\n- **SFT 风格语料与 RAG 知识分流**　从 approved 的 ShareGPT 或 OpenAI 数据分流，SFT 保留多轮上下文学习销售话术风格，RAG 提炼课程、价格、优惠等结构化知识。微调管风格、RAG 管知识，知识更新只改知识库，无需重新训练。\n\n- **三阶段 RAG 检索优化**　Embedding 向量化后，向量检索 Top-20 粗召回，再由 Cross-Encoder 精排取 Top-5。三阶段 Pipeline 改善双编码器对语义相近文档区分度不足的问题，知识命中率由 72% 提升至 89%。\n\n- **微调模型接入实时客服闭环**　将微调模型作为 LLM 层接入事实库项目二售前咨询的 RTC 实时语音链路，依次处理客户语音、ASR、RAG、微调 LLM、TTS 和语音回复。微调后可缩短 System Prompt、进一步降低 TTFT，打通数据中台、微调、客服的完整回路。\n\n日期待核实（requires_confirmation）。技能库所列微调项目起止年月顺序异常，正文保留待核状态。\n\n## 指定 PDF 的补充案例\n\n以下两项补充原 PDF 的评测和治理内容，独立于技能库的八项校验。\n\n**统一评测（原 PDF 第 5 页）**　工具参数和购物车状态用代码断言检查，开放式回答交给模型裁判。范本采用 80% 确定性断言和 20% 模型裁判，用独立 Mock 数据库与状态重置沙箱跑 100+ 用例。流水线要求核心安全用例 100% 通过，总体胜率低于阈值则拦截合入。失败时查看单例 Trace，将线上问题补成回归用例。\n\n**分层治理与研发协作（原 PDF 第 8 页）**　五层依次管理供应商、模型调用、平台能力、质量和协议连接。范本换用低价模型后，总均分下降 3 分，投诉安抚场景下降 12 分。团队据此分场景路由，记录成本下降 30%、质量持平。研发环节把规格、实现与验证放入同一个 PR，用 git worktree 隔离并行任务。\n",
+  "validator_version": "1.3.0",
+  "fact_coverage_ratio": 1.0,
+  "critical_fact_coverage_ratio": 1.0,
+  "completeness_passed": true
+}

@@ -1,0 +1,102 @@
+{
+  "output_id": "resume_016",
+  "project_order": [
+    "sales_consulting_agent",
+    "multimodal_asset_center",
+    "live_clip_agent",
+    "content_operation_agent",
+    "ai_data_platform",
+    "agent_runtime",
+    "mcp_shared_platform",
+    "model_finetuning"
+  ],
+  "narrative_style": "problem_solution_result",
+  "preserve_all_projects": true,
+  "preserve_all_highlights": true,
+  "preserve_all_atomic_facts": true,
+  "project_plans": {
+    "sales_consulting_agent": {
+      "alias": "售前商品咨询 Agent",
+      "highlight_order": [
+        "rerank_dense_weight",
+        "prefix_kv_ttft",
+        "rag_hybrid_int8",
+        "rtc_fec_jitter",
+        "multimodal_response",
+        "prompt_eval_feedback"
+      ]
+    },
+    "multimodal_asset_center": {
+      "alias": "知识素材中心与销售考核",
+      "highlight_order": [
+        "offline_enhancement",
+        "video_segment_mix",
+        "retrieval_text_vector",
+        "auto_exam",
+        "rag_exam_evolution"
+      ]
+    },
+    "live_clip_agent": {
+      "alias": "直播长视频智能切片",
+      "highlight_order": [
+        "workerfs_compress",
+        "postgres_queue",
+        "three_layer_arch",
+        "sse_progress",
+        "long_video_context"
+      ]
+    },
+    "content_operation_agent": {
+      "alias": "商品内容运营 Agent",
+      "highlight_order": [
+        "astream_ttft",
+        "async_generation",
+        "subgraph_checkpointer",
+        "model_routing_cost",
+        "observability",
+        "high_availability"
+      ]
+    },
+    "ai_data_platform": {
+      "alias": "知识数据与训练数据流水线",
+      "highlight_order": [
+        "triple_masking",
+        "conversation_blocks",
+        "etl_raw_chats",
+        "multi_format_export",
+        "data_bus"
+      ]
+    },
+    "agent_runtime": {
+      "alias": "商品交易 Agent运行时",
+      "highlight_order": [
+        "autonomous_loop",
+        "guardrails",
+        "provider_tool_registry",
+        "demonstration_learning",
+        "context_budget"
+      ]
+    },
+    "mcp_shared_platform": {
+      "alias": "多租户 MCP 基础设施",
+      "highlight_order": [
+        "rest_mcp_gateway",
+        "llm_gateway",
+        "four_mcp_servers",
+        "tenant_rag",
+        "dual_memory",
+        "seven_step_serverless"
+      ]
+    },
+    "model_finetuning": {
+      "alias": "销售模型微调与对齐",
+      "highlight_order": [
+        "qlora_lora",
+        "sft_dpo",
+        "sft_rag_split",
+        "three_stage_rag",
+        "rtc_closed_loop"
+      ]
+    }
+  }
+}
