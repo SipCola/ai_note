@@ -6,7 +6,16 @@
 
 ### 教育经历
 
-南京林业大学　｜　数字媒体艺术　｜　本科　｜　2024 届
+南京林业大学　｜　数字媒体　｜　本科　｜　2024 届
+
+## 自我评价
+
+毕业3年，技术出身，业务、运营、产品全懂  
+前端、服务端、运维全懂  
+精通Agent技术架构 & Ai团队管理  
+老板要是想带着公司做 AI 转型，我们一起奋斗。我是写代码出身，也喜欢跟产品、运营坐一块儿聊业务。  
+最有意思的就是聊着聊着，有人冒出一句，这活儿我每天都得干一遍，太麻烦了  
+这种时候我一般就一句话，给我看一遍，让我试试。
 
 ## 公司经历
 
@@ -26,6 +35,40 @@
 
 ## 项目关系总览
 
+```graphviz
+digraph overview {
+  rankdir=TB
+  p01 [label="01 评测与监控中台\n统一评测 · 回归门禁"]
+  p02 [label="02 数据中台\n清洗 · 脱敏 · 审核", class="focus"]
+  p03 [label="03 Harness 与 Agent Loop"]
+  p04 [label="04 统一治理网关\n多项目发展后建设\n各应用逐步接入"]
+  p05 [label="05 商品咨询\n私域与独立站", class="focus"]
+  p06 [label="06 内容生成"]
+  p07 [label="07 知识与素材中心\n商品 ID · 责任人 · 维护人"]
+  p08 [label="08 直播切片"]
+  p09 [label="09 导购培训与考核"]
+  p10 [label="10 专属模型微调\n优化业务表达风格"]
+  {rank=same; p06; p08; p02}
+  {rank=same; p07; p10; p09}
+  {rank=same; p05; p04}
+  {rank=same; p03; p01}
+  p02 -> p10 [label="训练语料"]
+  p02 -> p09 [label="业务知识"]
+  p02 -> p05 [label="RAG 知识"]
+  p10 -> p05 [label="微调模型"]
+  p06 -> p07:nw [label="商品图文"]
+  p08 -> p07:ne [label="直播视频"]
+  p07 -> p05 [label="文本、图片、视频"]
+  p05 -> p03 [label="咨询架构升级", class="upgrade"]
+  p04 -> p01 [label="L4 质量层联动"]
+  p08:n -> p02:n [label="ASR 转写", style=dashed, class="feedback", constraint=false]
+  p05:e -> p02:e [label="咨询样本", style=dashed, class="feedback", constraint=false]
+  p07:w -> p02:w [label="素材语料", style=dashed, class="feedback", constraint=false]
+}
+```
+
+实线表示数据或能力供给，陶色实线表示架构升级，蓝色虚线表示反馈回流。
+
 | 输入 | 处理 | 下游用途 |
 |---|---|---|
 | 历史销售对话 | 02 数据中台清洗、脱敏和审核 | 05 商品咨询、09 导购考核、10 模型微调 |
@@ -34,6 +77,25 @@
 | 02 审核后的训练语料 | 10 专属模型微调 | 05 接入微调模型，知识由 RAG 独立提供 |
 
 ### 项目一　Agent 自动化评测与监控中台
+
+```graphviz
+digraph evaluation {
+  rankdir=TB
+  p05 [label="05 商品咨询"]
+  p03 [label="03 Harness 与 Agent Loop"]
+  p10 [label="10 专属模型微调"]
+  p04 [label="04 治理网关 L4 质量层"]
+  p01 [label="01 评测与监控中台\n回归 · 门禁 · Trace", class="focus"]
+  online [label="线上失败交互\n固化为回归用例"]
+  {rank=same; p05; p03; p10}
+  {rank=same; p04; p01; online}
+  p05 -> p01
+  p03 -> p01
+  p10 -> p01
+  p04 -> p01:sw
+  online -> p01 [style=dashed, class="feedback"]
+}
+```
 
 为宠物电商导购 Agent 提供离线评测、运行追踪与发布回归能力。将模型、提示词和工具调用的变更放到同一套业务用例中验证，并与项目四的质量治理层联动。
 
@@ -46,6 +108,19 @@
 
 ### 项目二　宠物电商私域全链路 AI 数据资产中台
 
+```graphviz
+digraph data_platform {
+  rankdir=LR
+  chats [label="历史销售对话\n原始业务数据"]
+  p02 [label="02 数据中台\n清洗 · 脱敏 · 审核", class="focus"]
+  p05 [label="05 商品咨询\nRAG 知识"]
+  p10 [label="10 专属模型微调\n训练语料"]
+  p09 [label="09 导购培训与考核\n知识文章"]
+  chats -> p02
+  p02 -> {p05 p10 p09}
+}
+```
+
 所有跟 AI 相关的业务（如项目五客服、项目十微调、项目九考核、项目七素材、项目八直播）都从这里取数。把微信原始聊天记录加工成可训练、可检索、可考核的高质量数据资产。
 
 - **对话抽取与去重**　设计 ETL → 原始库 → 暂存区 → 人工审核 → 多下游的全链路数据流水线：从微信本地 SQLite （MSG0-5.db + MicroMsg.db）抽取消息，完成通讯录 wxid →显示名映射、群消息发送者解析、时间过滤与 (session, timestamp,content) 去重后落 raw_chats 原始库（不可变）。
@@ -56,6 +131,19 @@
 - **下游数据回流**　中台作为数据总线对接全业务：项目八直播切片的 ASR 转写结果回流入库留存，项目七素材中心的图片 / 视频反向补充多模态语料，真正实现 "AI 的一切都是数据 " 的闭环。
 
 ### 项目三　宠物商品交易场景的 Harness 与 Agent Loop 引擎
+
+```graphviz
+digraph harness {
+  rankdir=LR
+  p05 [label="05 商品咨询\n原有咨询系统"]
+  p03 [label="03 Harness 与 Agent Loop\n模型决策与工具执行", class="focus"]
+  p01 [label="01 评测与监控中台\n轨迹追踪与回归"]
+  expert [label="专家教学与纠偏\n样本与策略回流"]
+  p05 -> p03 [label="架构升级", class="upgrade"]
+  p03 -> p01
+  expert -> p03 [label="反馈", style=dashed, class="feedback"]
+}
+```
 
 从零设计并实现一套模型无关、工具可插拔的 Agent 运行时底座 (Harness)，支撑宠物商品售前咨询中可自主决策、可自我进化的智能客服 Agent （赋能项目五）。架构范式对齐 Claude Code，核心解决 " 如何用一个通用循环 + 标准化工具承载复杂多变的业务，而非堆砌流程编排 "。
 
@@ -75,6 +163,17 @@
 
 #### 三、 AI 自进化 : 示范学习 + 人在环自纠错闭环
 
+```graphviz
+digraph expert_feedback {
+  rankdir=LR
+  question [label="客户问题\n无法回答或需要纠偏"]
+  expert [label="专家补充\n标准答案与处理原因", class="focus"]
+  samples [label="样本与策略\n后续咨询继续复用"]
+  question -> expert -> samples
+  samples -> question [label="复用于后续咨询", style=dashed, class="feedback", constraint=false]
+}
+```
+
 - **专家教学**　示范学习替代微调 : 业务专家以「问题 + 标准答案 + 套路原因」对话式教学 → 样本入库 → LLM 自动归纳 " 套路总纲 " → 注入系统提示词驱动真实回复。相比微调，轻量、可解释，更契合业务话术高频迭代。
 - **相似意图**　语义泛化，举一反三 : 服务时召回全量样本交大模型语义精判，换问法 / 相似意图自动命中套路，未教过且无把握的问题自动转人工，守住事实红线。
 - **规则合并**　状态合并 ( 可控进化 ): 套路总纲支持人工改写并持久化，重归纳时以人工版为基底增量融合新样本 ( 冲突以人工为准 ), 坚持单一数据源、杜绝规则漂移。
@@ -82,6 +181,19 @@
 - **提示词优先级**　提示词分层治理 : 业务铁律 > 套路总纲 > 召回样本话术，分层拼装、优先级明确，保障报价等高风险动作可控。
 
 ### 项目四　宠物电商 Agent 分层治理网关与 AI 研发效能提升
+
+```graphviz
+digraph governance {
+  rankdir=TB
+  p04 [label="04 统一治理网关\n共享模型网关、工具与记忆", class="focus"]
+  p05 [label="05 商品咨询"]
+  p06 [label="06 内容生成"]
+  p08 [label="08 直播切片"]
+  p01 [label="01 评测与监控中台"]
+  p04 -> {p05 p06 p08}
+  p04 -> p01 [label="质量层联动"]
+}
+```
 
 按分层图重构 AI 体系（为项目五、项目六、项目八等所有 AI 应用提供统一网关支撑）： L1 收供应商、 L2 收调用、 L3 收能力、 L4 收质量、 L5 收连接；并把同一套 " 验证左移 " 的方法论用于研发协作。
 
@@ -102,6 +214,27 @@
 
 ### 项目五　宠物商品私域售前咨询 Agent
 
+```graphviz
+digraph consultation {
+  rankdir=TB
+  p02 [label="02 数据中台"]
+  p07 [label="07 知识与素材中心"]
+  p10 [label="10 专属模型微调"]
+  p04 [label="04 统一治理网关"]
+  p05 [label="05 商品咨询\n私域与独立站", class="focus"]
+  p03 [label="03 Harness 与 Agent Loop"]
+  p01 [label="01 评测与监控中台"]
+  {rank=same; p02; p07; p10; p04}
+  p02 -> p05 [label="RAG 知识"]
+  p07 -> p05 [label="文本、图片\n与视频"]
+  p10 -> p05 [label="微调模型"]
+  p04 -> p05 [label="网关与执行治理"]
+  p05 -> p03 [label="咨询架构升级", class="upgrade"]
+  p05 -> p01 [label="自动化评测"]
+  p05:w -> p02:w [label="样本回流", style=dashed, class="feedback", constraint=false]
+}
+```
+
 电商私域销售场景：把销售在微信 /WhatsApp 的对话数据经项目二（AI 数据中台）清洗后建立 RAG 知识库， 构建可实时语音对话的智能客服，承接商品咨询到引导下单的全流程。
 
 - **混合检索**　知识库直接消费项目二（AI 数据中台）导出的 RAG 数据，采用自定义标识符切片解决语义截断，应用 HNSW_HYBRID 混合检索 + Int8 量化，构建 Metadata 标签过滤机制，存储空间降低 75%。
@@ -113,6 +246,19 @@
 - **推理预算**　接入经项目十（专属微调工程）训练后的模型作为 LLM 层，通过缩短 system prompt 进一步降低 TTFT；并建立 Max Token 分级控制模型，按 95% 覆盖率边界动态配置推理 / 输出比例，提升单请求 Token 利用率。
 
 ### 项目六　宠物品牌自媒体运营与多阶段内容生成 Agent
+
+```graphviz
+digraph content_generation {
+  rankdir=TB
+  p04 [label="04 统一治理网关"]
+  p06 [label="06 内容生成\n商品介绍与图片", class="focus"]
+  p07 [label="07 知识与素材中心\n关联商品与维护人"]
+  p05 [label="05 商品咨询\n调用图文视频素材"]
+  {rank=same; p06; p07; p05}
+  p04 -> p06 [label="治理与成本核算"]
+  p06 -> p07 -> p05
+}
+```
 
 电商要持续产出商品图、商品介绍、宣传文案，做一个内容生成 Agent 降本增效；产出的图片直接关联到项目七（多模态素材中心），反哺多模态知识库。
 
@@ -126,6 +272,20 @@
 
 ### 项目七　多模态知识库与商品素材管控中心
 
+```graphviz
+digraph assets {
+  rankdir=LR
+  p06 [label="06 内容生成\n商品图与介绍"]
+  p08 [label="08 直播切片\n商品介绍视频"]
+  p07 [label="07 知识与素材中心\n文本、图片、视频\n商品 ID · 责任人 · 维护人", class="focus"]
+  p05 [label="05 商品咨询\n商品关联应答"]
+  p02 [label="02 数据中台"]
+  {p06 p08} -> p07
+  p07 -> p05
+  p07 -> p02 [label="语料补充", style=dashed, class="feedback"]
+}
+```
+
 两件事一条数据线：素材中心统一管理商品图 / 详情 / 视频，为项目五（AI 客服）提供多模态回复能力，同时补充项目二（AI 数据中台）；中台导出的高质量知识又驱动项目九（AI 销售考核），替代过去的人工培训。
 
 - **统一向量检索**　设计统一向量底座 rag_assets： text/image/video 三模态共用一张表（pgvector 1024 维 + HNSW vector_cosine_ops），一条 SQL 跨模态召回；核心理念是不向量化媒体本身，而向量化其「检索文本」 retrieval_text （" 这张图 / 视频能回答什么问题 "），与用户文本提问天然对齐。
@@ -134,6 +294,18 @@
 - **视频定位与混排**　设计长视频按 ASR 时间戳分段为多条 rag_assets， media_url 携带 #t= 秒数，命中后前端播放器直接跳转到精彩片段；统一应答按「文字必发、图≤ 3、视频≤ 1 」混排，阈值递增（text 0.35 < image 0.40 < video 0.42）。
 
 ### 项目八　宠物商品带货直播切片与音视频处理 Agent
+
+```graphviz
+digraph live_clips {
+  rankdir=LR
+  p08 [label="08 直播切片\n商品介绍视频", class="focus"]
+  p07 [label="07 知识与素材中心\n关联商品与维护人"]
+  p05 [label="05 商品咨询\n调用图文视频素材"]
+  p02 [label="02 数据中台"]
+  p08 -> p07 -> p05
+  p08 -> p02 [label="ASR 转写回流", style=dashed, class="feedback"]
+}
+```
 
 公司有直播带货场景，把直播回放交给 AI 自动找精彩片段、配标题文案，减轻剪辑师工作；转写结果同步回流项目二（AI 数据中台）留存复用。
 
@@ -146,11 +318,34 @@
 
 ### 项目九　私域导购培训与智能考核 Agent
 
+```graphviz
+digraph sales_training {
+  rankdir=LR
+  p02 [label="02 数据中台\n审核后的知识资产"]
+  p09 [label="09 导购培训与考核\n场景出题与自动评分", class="focus"]
+  hires [label="新入职导购\n培训 · 考核 · 人工复核"]
+  p02 -> p09 [label="knowledge_articles\nknowledge_chunks"]
+  p09 -> hires
+}
+```
+
 - **分级出题**　实现 LLM 自动出题：直接消费项目二（AI 数据中台）产出的 knowledge_articles/knowledge_chunks，按场景分类 + 置信度取素材，以「资深考官」角色（temperature 0.7）生成简单 / 中等 / 困难分级的开放式场景题与参考答案，全面替代传统人工培训。
 - **多维评分**　实现 LLM 自动评判：以「资深评审专家」角色（temperature 0.3 保稳定）从实战性、需求把握、销售策略、 话术自然度、红线检查五维度逐题打分，按「平均分 ×10 」映射百分制，支持人工二次复核校准。
 - **知识库扩展**　针对知识库膨胀到十万级的演进，设计 RAG 出题方案：模糊请求先由 LLM 规划主题 → 多轮向量检索 （pgvector/Milvus）→ MMR 去重保多样性，解决固定 top-30 导致题目重复、长尾素材浪费的问题。
 
 ### 项目十　基于私域导购对话的销售模型微调
+
+```graphviz
+digraph fine_tuning {
+  rankdir=LR
+  p02 [label="02 数据中台"]
+  p10 [label="10 专属模型微调\n本地验证 · 云端训练", class="focus"]
+  p05 [label="05 商品咨询"]
+  p02 -> p10 [label="审核后的\n训练语料"]
+  p10 -> p05 [label="接入微调模型"]
+  p02 -> p05 [label="RAG 知识独立供给"]
+}
+```
 
 为了让项目五（AI 客服）回复更像真人，基于项目二（AI 数据中台）导出的 SFT/DPO 数据微调豆包模型，再回灌到项目五的客服系统中。
 
